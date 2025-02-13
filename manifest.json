@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "QP Extract",
+  "version": "1.0",
+  "permissions": ["webRequest", "storage", "activeTab", "scripting"],
+  "host_permissions": ["https://api.608939.com/*","https://tele.gsd88.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon/favicon-16.png",
+      "48": "icon/favicon-48.png",
+      "128": "icon/favicon-128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://api.608939.com/*","https://tele.gsd88.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
