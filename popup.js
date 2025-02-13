@@ -2,21 +2,24 @@
   const defaultD = defaultDate();
   document.getElementById("startDate").value = defaultD.start_date;
   document.getElementById("endDate").value = defaultD.end_date;
-
 })();
 
-
-
 document.getElementById("fetchToken").addEventListener("click", function () {
+  let status_get = "";
   chrome.runtime.sendMessage({ type: "getAccessToken" }, (response) => {
     if(response.accessToken){
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        let start_date = ddocument.getElementById("startDate").value;
+        let start_date = document.getElementById("startDate").value;
         let end_date = document.getElementById("endDate").value;
         let stage = document.getElementById("stage").value;
-
-
-        chrome.tabs.sendMessage(tabs[0].id, { type: "SEND_DATA", accessToken: response.accessToken, start_date: start_date, end_date: end_date, stage: stage });
+        let status = Array.from(document.querySelectorAll('input[name="status"]:checked')).map(checkbox => checkbox.value);
+        for (let i = 0; i < status.length; i++) {
+          status_get += `&status[${i}]=${status[i]}`;
+        }
+        chrome.storage.local.get("tokenSelector", (data) => {
+          chrome.tabs.sendMessage(tabs[0].id, { type: "SEND_DATA", accessToken: response.accessToken, start_date: start_date, end_date: end_date, stage: stage,status: status_get, tokenSelector: data.tokenSelector });
+        });
+        
       });
     }else{
       alert("Extension error. Contact JX!");
