@@ -46,12 +46,23 @@ function exportToCSV(apiResponse) {
   }
 
   const rows = apiResponse.data.rows;
+  // Define only the headers (columns) you want to export
+  const selectedHeaders = [
+    "member_account_id",
+    "username",
+    "name",
+    "mobile",
+    "locale",
+    "currency",
+    "kpi_deposit_amount",
+    "fav_game_category"
+];
   const headers = Object.keys(rows[0]); // Extract headers from first row
-  let csvContent = headers.join(",") + "\n"; // Create CSV header row
+  let csvContent = "\uFEFF" + selectedHeaders.join(",") + "\n"; // Create CSV header row
 
   // Convert each row into CSV format
   rows.forEach(row => {
-      const values = headers.map(header => {
+      const values = selectedHeaders.map(header => {
           let cell = row[header];
 
           // Handle null, undefined, and escape special characters
