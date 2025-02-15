@@ -66,9 +66,9 @@ async function exportToCSV(apiResponse, token, tokenSelector, end_date) {
     const additionalData = await fetchAdditionalData(row.username, token, tokenSelector, end_date);
     
     // Extract relevant fields from additionalData (Modify this part as per API response)
-    const add_game_provider = additionalData?.data?.game_provider_code || "N/A";
-    const add_game_account = additionalData?.data?.game_account || "N/A";
-    const add_bet_amount = additionalData?.data?.total_bet_amount || "N/A";
+    const add_game_provider = additionalData?.game_provider_code || "N/A";
+    const add_game_account = additionalData?.game_account || "N/A";
+    const add_bet_amount = additionalData?.total_bet_amount || "N/A";
 
     const values = selectedHeaders.map(header => {
         let cell = row[header];
