@@ -78,6 +78,7 @@ async function exportToCSV(apiResponse, token, tokenSelector, end_date) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  chrome.runtime.sendMessage({ action: "downloadStatus", data: "complete"});
 }
 
 async function fetchAdditionalData(username, token, tokenSelector, end_date) {

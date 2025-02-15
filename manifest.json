@@ -1,6 +1,7 @@
 {
   "manifest_version": 3,
   "name": "QP Extract",
+  "description": "QP Extension developed by UHS TECHNOLOGY",
   "version": "1.0",
   "permissions": ["webRequest", "storage", "activeTab", "scripting"],
   "host_permissions": ["https://api.608939.com/*","https://tele.gsd88.com/*"],

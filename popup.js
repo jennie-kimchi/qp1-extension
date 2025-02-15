@@ -17,14 +17,22 @@ document.getElementById("fetchToken").addEventListener("click", function () {
           status_get += `&status[${i}]=${status[i]}`;
         }
         chrome.storage.local.get("tokenSelector", (data) => {
+          document.getElementById("fetchToken").textContent = "Please wait, fetching data...";
+          document.getElementById("fetchToken").disabled = true;
           chrome.tabs.sendMessage(tabs[0].id, { type: "SEND_DATA", accessToken: response.accessToken, start_date: start_date, end_date: end_date, stage: stage,status: status_get, tokenSelector: data.tokenSelector });
         });
-        
       });
     }else{
       alert("Extension error. Contact JX!");
     }
   });
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "downloadStatus" && message.data === "complete") {
+    document.getElementById("fetchToken").textContent = "Download Data";
+    document.getElementById("fetchToken").disabled = false;
+  }
 });
 
 function defaultDate() {
