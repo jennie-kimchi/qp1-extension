@@ -39,7 +39,7 @@ async function exportToCSV(apiResponse, token, tokenSelector, end_date) {
 
   const rows = apiResponse.data.rows;
   const selectedHeaders = [
-    "member_account_id", "username", "name", "mobile", "locale", "currency", "kpi_deposit_amount", "fav_game_category"
+    "username", "name", "mobile", "locale", "currency", "kpi_deposit_amount", "fav_game_category"
   ];
   const additionalHeaders = ["game_provider_code", "game_account", "total_bet_amount", "most_played_game", "most_played_category", "total_win_lose"];
   let csvContent = "\uFEFF" + [...selectedHeaders, ...additionalHeaders].join(",") + "\n";
