@@ -149,3 +149,57 @@ async function getDateDaysBefore(dateString, days) {
   date.setDate(date.getDate() - days);
   return date.toISOString().split('T')[0];
 }
+
+async function callChatGPTAPI(username, language = "English", token = "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"){
+  const url = `https://api.openai.com/v1/chat/completions`;
+
+  const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+  };
+
+  let prompt = { "model": "gpt-4o-mini", "store": true, "messages": [
+    {
+      "role": "developer",
+      "content": [
+        {
+          "type": "text",
+          "text": `
+            You are a helpful assistant that assisting Jennie (Account Manager) on her task on BP9 Platform, a platform related to online gaming or betting, her job is to send marketing or promotional spiels through whatsapp to urge their customers to continue to deposit and play on BP9 Platform. Jennie send speils in English, Chinese or Malay based on the preference of their customers. Below are the sample of the spiels that Jennie send to their customers, she need help to generate unique and attractive spiels for her customer by following the stucture of the speils below:
+
+            '
+            Greetings, _USERNAME_
+            Hi! I'm Jennie, your Account Manager at BP9. Just wanted to wish you good luck and happy gaming for the next 3 days! 🎉 We've got some lucky hours lined up just for you—the best times to enjoy your favorite games and boost your chances of winning big!
+            
+            🎲 Pr@gm@tic Play - Gates of Olympus, Starlight Princess:
+            Best Play Time: 4 PM - 8 PM
+            Big Payouts: Up to SGD 6,000 with just 30 minutes of play!
+            Dont miss these lucky hours—give it a shot and try your luck!
+            '
+
+            When generating spiels, do take note to replace the _USERNAME_ with the customer's name and also replacing sensitive words with symbols to avoid getting flagged by WhatsApp such as Pragmatic Play to Pr@gm@tic Play, Gamble to G@mble, etc. Jennie only need a single spiel for each customer. 
+          `
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": `Username: ${username}; Language: ${language}`
+        }
+      ]
+    }
+  ]};
+
+  try {
+      const response = await fetch(url, { method: "POST", headers: headers, body: JSON.stringify(prompt)});
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+      await console.log("API Response:", data.choices[0].message.content);
+      return data;
+  } catch (error) {
+      console.error("Error fetching API data:", error);
+  }
+}
