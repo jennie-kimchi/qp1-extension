@@ -150,12 +150,15 @@ async function getDateDaysBefore(dateString, days) {
   return date.toISOString().split('T')[0];
 }
 
-async function callChatGPTAPI(username, language = "English", token = "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"){
+async function callChatGPTAPI(username, language = "English", platform = null, category = null, game = null, token = "c2stcHJvai1lcTlPV0lGdmc0RXZtQXFBRVhtV05MdDZmZ253TFlrcHJJSTQ1cFRVdnVkOGZhZ2V4bkljSlNhZVJkMzRvMi1odHozUmtfZ2FvbVQzQmxia0ZKcUZrb2p5eXRmd3hNUHI0UU05amlTLWJBMkt2amFGY2IxeG85Rk0ycXhJV3ZPTjNib196OWxKbFpiUTl2bkNNRUV0TWYwYmN4OEE="){
   const url = `https://api.openai.com/v1/chat/completions`;
+  platform = platform ? `Game Provider: ${platform}; ` : "";
+  category = category ? `Favourite Game Category: ${category}; ` : "";
+  game = game ? `Favourite Game: ${game}; ` : "";
 
   const headers = {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+      "Authorization": `Bearer ${window.atob(token)}`
   };
 
   let prompt = { "model": "gpt-4o-mini", "store": true, "messages": [
@@ -165,19 +168,9 @@ async function callChatGPTAPI(username, language = "English", token = "sk-proj-o
         {
           "type": "text",
           "text": `
-            You are a helpful assistant that assisting Jennie (Account Manager) on her task on BP9 Platform, a platform related to online gaming or betting, her job is to send marketing or promotional spiels through whatsapp to urge their customers to continue to deposit and play on BP9 Platform. Jennie send speils in English, Chinese or Malay based on the preference of their customers. Below are the sample of the spiels that Jennie send to their customers, she need help to generate unique and attractive spiels for her customer by following the stucture of the speils below:
+            You are a helpful assistant that assisting Jennie (Account Manager) on her task on BP9 Platform, a platform related to online gaming or betting, her job is to send marketing or promotional spiels through whatsapp to urge their customers to continue to deposit and play on BP9 Platform. Jennie send speils in English, Chinese or Malay based on the preference of their customers, game names and provider name will remain in english. Jennie needs help to generate unique and attractive spiels for her customer, each spiels should be unique and different with any types of format, but the basic info should be included such as introducing herself and a recommended game to play based on the provider Jennie prompted. The speil can be either introducing games, recommending best play time, or any other creative spiels.
 
-            '
-            Greetings, _USERNAME_
-            Hi! I'm Jennie, your Account Manager at BP9. Just wanted to wish you good luck and happy gaming for the next 3 days! 🎉 We've got some lucky hours lined up just for you—the best times to enjoy your favorite games and boost your chances of winning big!
-            
-            🎲 Pr@gm@tic Play - Gates of Olympus, Starlight Princess:
-            Best Play Time: 4 PM - 8 PM
-            Big Payouts: Up to SGD 6,000 with just 30 minutes of play!
-            Dont miss these lucky hours—give it a shot and try your luck!
-            '
-
-            When generating spiels, do take note to replace the _USERNAME_ with the customer's name and also replacing sensitive words with symbols to avoid getting flagged by WhatsApp such as Pragmatic Play to Pr@gm@tic Play, Gamble to G@mble, etc. Jennie only need a single spiel for each customer. 
+            When generating spiels, do take note to greet the customer with their username and also replacing sensitive words with symbols to avoid getting flagged by WhatsApp such as Pragmatic Play to Pr@gm@tic Play, Gamble to G@mble, etc. Jennie only need a single spiel for each customer. 
           `
         }
       ]
@@ -187,7 +180,7 @@ async function callChatGPTAPI(username, language = "English", token = "sk-proj-o
       "content": [
         {
           "type": "text",
-          "text": `Username: ${username}; Language: ${language}`
+          "text": `Username: ${username}; Language: ${language}; ${platform}; Favourite Game Category: ${category}; Favourite Game: ${game};`
         }
       ]
     }
