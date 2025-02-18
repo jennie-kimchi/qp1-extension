@@ -16,10 +16,11 @@ document.getElementById("fetchToken").addEventListener("click", function () {
         for (let i = 0; i < status.length; i++) {
           status_get += `&status[${i}]=${status[i]}`;
         }
+        let chatgpt = document.getElementById("chatgpt").value;
         chrome.storage.local.get("tokenSelector", (data) => {
           document.getElementById("fetchToken").textContent = "Please wait, fetching data...";
           document.getElementById("fetchToken").disabled = true;
-          chrome.tabs.sendMessage(tabs[0].id, { type: "SEND_DATA", accessToken: response.accessToken, start_date: start_date, end_date: end_date, stage: stage,status: status_get, tokenSelector: data.tokenSelector });
+          chrome.tabs.sendMessage(tabs[0].id, { type: "SEND_DATA", accessToken: response.accessToken, start_date: start_date, end_date: end_date, stage: stage,status: status_get, tokenSelector: data.tokenSelector, chatgpt: chatgpt });
         });
       });
     }else{
