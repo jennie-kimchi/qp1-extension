@@ -1,3 +1,5 @@
+const backend_API = "https://qpro1api.823868.com/";
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "SEND_DATA") {
     if(message.accessToken){
@@ -10,7 +12,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 async function fetchData(token, start_date, end_date, stage, status, tokenSelector, chatgpt) {
-  const url = `https://api.608939.com/api/bo/accountmanagement?page=1&perPage=1000&currency_id=all&date_type=lead_assigned_datetime&start_date=${start_date}%2016:00:00&end_date=${end_date}%2015:59:59&dummy=1&sort_by=id&sort_order=desc&development_stage=${stage}${status}`;
+  const url = `${backend_API}api/bo/accountmanagement?page=1&perPage=1000&currency_id=all&date_type=lead_assigned_datetime&start_date=${start_date}%2016:00:00&end_date=${end_date}%2015:59:59&dummy=1&sort_by=id&sort_order=desc&development_stage=${stage}${status}`;
 
   const headers = {
       "Access-Token": token,
@@ -85,7 +87,7 @@ async function exportToCSV(apiResponse, token, tokenSelector, end_date, chatgpt)
 
 async function fetchAdditionalData(username, token, tokenSelector, end_date, language, chatgpt) {
   const date30DaysBefore = await getDateDaysBefore(end_date, 30);
-  const memberReportURL = `https://api.608939.com/api/bo/report/memberreport?perPage=100&username=${encodeURIComponent(username)}&start_date_time=${date30DaysBefore}%2016:00:00&end_date_time=${end_date}%2015:59:59`;
+  const memberReportURL = `${backend_API}api/bo/report/memberreport?perPage=100&username=${encodeURIComponent(username)}&start_date_time=${date30DaysBefore}%2016:00:00&end_date_time=${end_date}%2015:59:59`;
 
   try {
       const response = await fetch(memberReportURL, { method: "GET", headers: { "Access-Token": token, "Authorization": `Bearer ${token}`, "User-Agent": "Mozilla/5.0", "Token-Selector": tokenSelector } });
@@ -111,7 +113,7 @@ async function fetchAdditionalData(username, token, tokenSelector, end_date, lan
 
 async function fetchGameResult(username, gameProvider, token, tokenSelector, end_date, currencyCode) {
   const date30DaysBefore = await getDateDaysBefore(end_date, 30);
-  const gameResultURL = `https://api.608939.com/api/bo/report/gametype?paginate=true&page=1&perPage=15&option=game&game_sub_category_name=all&start_date_time=${date30DaysBefore}%2016:00:00&end_date_time=${end_date}%2015:59:59&game_provider_code=${encodeURIComponent(gameProvider)}&username=${encodeURIComponent(username)}`;
+  const gameResultURL = `${backend_API}api/bo/report/gametype?paginate=true&page=1&perPage=15&option=game&game_sub_category_name=all&start_date_time=${date30DaysBefore}%2016:00:00&end_date_time=${end_date}%2015:59:59&game_provider_code=${encodeURIComponent(gameProvider)}&username=${encodeURIComponent(username)}`;
 
   try {
       const gameResponse = await fetch(gameResultURL, { method: "GET", headers: { "Access-Token": token, "Authorization": `Bearer ${token}`, "User-Agent": "Mozilla/5.0", "Token-Selector": tokenSelector } });

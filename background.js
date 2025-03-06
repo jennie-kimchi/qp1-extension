@@ -2,7 +2,7 @@ let latestAccessToken = '', latestTokenSelector = '';
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
   function (details) {
-    if (details.url.includes("https://api.608939.com/api/bo/accountManagerList")) {
+    if (details.url.includes("api/bo/accountManagerList")) {
       for (let header of details.requestHeaders) {
         if (header.name.toLowerCase() === "access-token") {
           latestAccessToken = header.value;
@@ -16,7 +16,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
       }
     }
   },
-  { urls: ["https://api.608939.com/api/bo/accountManagerList"] },
+  { urls: ["https://api.608939.com/api/bo/accountManagerList","https://qpro1api.823868.com/api/bo/accountManagerList"] },
   ["requestHeaders"]
 );
 

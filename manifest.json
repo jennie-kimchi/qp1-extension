@@ -4,7 +4,7 @@
   "description": "QP Extension developed by UHS TECHNOLOGY",
   "version": "1.0",
   "permissions": ["webRequest", "storage", "activeTab", "scripting"],
-  "host_permissions": ["https://api.608939.com/*","https://tele.gsd88.com/*"],
+  "host_permissions": ["https://api.608939.com/*","https://tele.gsd88.com/*","https://qpro1api.823868.com/*"],
   "background": {
     "service_worker": "background.js"
   },
@@ -18,7 +18,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://api.608939.com/*","https://tele.gsd88.com/*"],
+      "matches": ["https://api.608939.com/*","https://tele.gsd88.com/*","https://qpro1api.823868.com/*"],
       "js": ["content.js"]
     }
   ]
